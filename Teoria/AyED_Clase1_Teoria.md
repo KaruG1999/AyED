@@ -339,6 +339,167 @@ System.out.println(maxmin.getMin()); // 0
 
 ---
 
+### Recursión
+
+Un método es **recursivo** cuando se llama a sí mismo. Toda recursión necesita dos cosas:
+
+- **Caso base**: la condición que detiene la recursión (sin esto → stack overflow).
+- **Caso recursivo**: la llamada al propio método con un problema más pequeño.
+
+```java
+// Ejemplo clásico: factorial
+public static int factorial(int n) {
+    if (n == 0) return 1;           // caso base
+    return n * factorial(n - 1);    // caso recursivo
+}
+```
+
+**Cómo piensa la recursión:** cada llamada apila un nuevo frame en el STACK con sus propias variables locales. Cuando llega al caso base, los frames se van resolviendo de atrás para adelante.
+
+```
+factorial(3)
+  → 3 * factorial(2)
+         → 2 * factorial(1)
+                → 1 * factorial(0)
+                       → 1        ← caso base
+                → 1 * 1 = 1
+         → 2 * 1 = 2
+  → 3 * 2 = 6
+```
+
+**Recursión sobre listas:** el patrón más común en AyED es procesar el primer elemento y llamarse recursivamente con el resto:
+
+```java
+// Suma recursiva de una lista
+public int sumar(LinkedList<Integer> lista) {
+    if (lista.isEmpty()) return 0;              // caso base
+    int primero = lista.removeFirst();
+    int resto = sumar(lista);                   // caso recursivo
+    lista.addFirst(primero);                    // restaurar (si es necesario)
+    return primero + resto;
+}
+```
+
+---
+
+### ArrayList y LinkedList
+
+Java provee dos implementaciones de lista en `java.util`. Ambas implementan la interfaz `List<T>`.
+
+#### Diferencias clave
+
+| | `ArrayList` | `LinkedList` |
+|---|---|---|
+| **Estructura interna** | Array redimensionable | Nodos enlazados (doble) |
+| **Acceso por índice** (`get(i)`) | O(1) — acceso directo | O(n) — recorre desde el inicio |
+| **Insertar/eliminar al inicio o medio** | O(n) — desplaza elementos | O(1) — solo cambia punteros |
+| **Insertar al final** (`add`) | O(1) amortizado | O(1) |
+| **Memoria** | Menos overhead | Más overhead (cada nodo guarda 2 referencias) |
+| **Cuándo preferirla** | Lectura frecuente, acceso por índice | Inserción/eliminación frecuente en los extremos |
+
+#### Uso básico (la API es la misma para ambas)
+
+```java
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+ArrayList<Integer> lista = new ArrayList<>();
+lista.add(10);              // agrega al final
+lista.add(0, 5);            // agrega en posición 0
+lista.get(1);               // obtiene elemento en índice 1
+lista.remove(0);            // elimina por índice
+lista.remove(Integer.valueOf(10)); // elimina por valor
+lista.size();               // cantidad de elementos
+lista.contains(5);          // true/false
+lista.isEmpty();            // true si vacía
+
+// LinkedList además tiene:
+LinkedList<Integer> ll = new LinkedList<>();
+ll.addFirst(1);             // agrega al inicio
+ll.addLast(2);              // agrega al final
+ll.removeFirst();           // elimina y retorna el primero
+ll.removeLast();            // elimina y retorna el último
+ll.getFirst();              // solo consulta el primero
+```
+
+#### Recorrido
+
+```java
+// For-each (recomendado)
+for (Integer n : lista) {
+    System.out.println(n);
+}
+
+// For tradicional con índice
+for (int i = 0; i < lista.size(); i++) {
+    System.out.println(lista.get(i));
+}
+
+// Iterator
+Iterator<Integer> it = lista.iterator();
+while (it.hasNext()) {
+    System.out.println(it.next());
+}
+```
+
+#### Copia de listas
+
+```java
+// Copia superficial (shallow copy) — los objetos son compartidos
+ArrayList<Estudiante> copia = new ArrayList<>(original);
+
+// Después de copiar, si modificás el estado de un objeto:
+original.get(0).setNombre("Nuevo");
+// copia.get(0).getNombre() también devuelve "Nuevo"
+// porque ambas listas apuntan a los MISMOS objetos en heap
+```
+
+> La copia superficial copia las **referencias**, no los objetos. Para una copia profunda (deep copy) habría que crear nuevos objetos uno a uno.
+
+---
+
+### Generics básicos
+
+La notación `<T>` en `ArrayList<T>` indica que la lista trabaja con un tipo genérico. Al instanciar se especifica el tipo concreto:
+
+```java
+ArrayList<Integer> numeros = new ArrayList<>();  // solo acepta Integer
+ArrayList<Estudiante> estudiantes = new ArrayList<>(); // solo acepta Estudiante
+```
+
+Beneficios: el compilador detecta errores de tipo en tiempo de compilación, y no hace falta castear al recuperar elementos.
+
+```java
+// Sin generics (viejo estilo, no usar)
+ArrayList lista = new ArrayList();
+lista.add("hola");
+String s = (String) lista.get(0);  // cast manual, puede fallar en runtime
+
+// Con generics (moderno)
+ArrayList<String> lista = new ArrayList<>();
+lista.add("hola");
+String s = lista.get(0);           // sin cast, el compilador garantiza el tipo
+```
+
+---
+
+### Entrada por teclado con Scanner
+
+```java
+import java.util.Scanner;
+
+Scanner sc = new Scanner(System.in);
+
+int n       = sc.nextInt();      // lee un entero
+double d    = sc.nextDouble();   // lee un double
+String s    = sc.next();         // lee una palabra (hasta espacio)
+String linea = sc.nextLine();    // lee una línea completa
+```
+
+> ⚠️ Después de `nextInt()` o `nextDouble()`, el `\n` queda en el buffer. Si luego usás `nextLine()`, vas a leer una línea vacía. Solución: agregar un `sc.nextLine()` extra para consumir ese salto.
+
+---
+
 ## Visualización
 
 ### Stack vs. Heap al crear un objeto
