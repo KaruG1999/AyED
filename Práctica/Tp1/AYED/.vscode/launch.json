@@ -1,0 +1,85 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Ej1 - ImprimirRango",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio1.ImprimirRango"
+        },
+        {
+            "type": "java",
+            "name": "Ej2 - Multiplos",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio2.Multiplos",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "Ej3 - Test (Estudiante y Profesor)",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio3.Test"
+        },
+        {
+            "type": "java",
+            "name": "Ej4 - SwapValores",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio4.SwapValores"
+        },
+        {
+            "type": "java",
+            "name": "Ej5 - Calculadora",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio5.Calculadora"
+        },
+        {
+            "type": "java",
+            "name": "Ej6 - Analisis Listas",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio6.AnalisisListas"
+        },
+        {
+            "type": "java",
+            "name": "Ej7a - TestArrayList",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio7.TestArrayList",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "Ej7 - EjercicioListas",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio7.EjercicioListas"
+        },
+        {
+            "type": "java",
+            "name": "Ej7g - EjercicioSucesion",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio7.EjercicioSucesion"
+        },
+        {
+            "type": "java",
+            "name": "Ej8 - TestQueue",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio8.TestQueue"
+        },
+        {
+            "type": "java",
+            "name": "Ej9 - TestBalanceo",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio9.TestBalanceo"
+        },
+        {
+            "type": "java",
+            "name": "Ej10 - ColaBanco",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio10.ColaBanco"
+        },
+        {
+            "type": "java",
+            "name": "Ej11 - ColectivosCircular",
+            "request": "launch",
+            "mainClass": "tp1.ejercicio11.ColectivosCircular"
+        }
+    ]
+}

@@ -250,23 +250,27 @@ public class Calculadora {
         return new int[]{max, min, suma / datos.length};
     }
 
-    // b) Retorno por parámetro → se pasa un arreglo de salida
-    // No puede ser primitivo (pasaje por valor no funciona),
-    // pero un arreglo es un objeto → su contenido sí se puede modificar
-    public static void maxMinPromedioParam(int[] datos, int[] resultado) {
-        // resultado[0]=max, resultado[1]=min, resultado[2]=promedio
-        resultado[0] = datos[0];
-        resultado[1] = datos[0];
-        int suma = 0;
-        for (int d : datos) {
-            if (d > resultado[0]) resultado[0] = d;
-            if (d < resultado[1]) resultado[1] = d;
-            suma += d;
-        }
-        resultado[2] = suma / datos.length;
+    // b) Retorno por parámetro → el parámetro NO puede ser de tipo arreglo (dice el enunciado)
+    //    → se crea una clase contenedora Resultado como objeto de salida
+    static class Resultado {
+        public int max;
+        public int min;
+        public int promedio;
     }
 
-    // c) Sin return ni parámetros → variable de clase (static)
+    public static void maxMinPromedioParam(int[] datos, Resultado r) {
+        r.max = datos[0];
+        r.min = datos[0];
+        int suma = 0;
+        for (int d : datos) {
+            if (d > r.max) r.max = d;
+            if (d < r.min) r.min = d;
+            suma += d;
+        }
+        r.promedio = suma / datos.length;
+    }
+
+    // c) Sin return ni parámetros → variables de clase (static)
     public static int maxStatic;
     public static int minStatic;
     public static int promedioStatic;
@@ -291,9 +295,9 @@ public class Calculadora {
         System.out.println("a) max=" + res[0] + " min=" + res[1] + " prom=" + res[2]);
 
         // b)
-        int[] resultado = new int[3];
-        maxMinPromedioParam(datos, resultado);
-        System.out.println("b) max=" + resultado[0] + " min=" + resultado[1] + " prom=" + resultado[2]);
+        Resultado r = new Resultado();
+        maxMinPromedioParam(datos, r);
+        System.out.println("b) max=" + r.max + " min=" + r.min + " prom=" + r.promedio);
 
         // c)
         calcularStatic(datos);
@@ -302,7 +306,7 @@ public class Calculadora {
 }
 ```
 
-**Por qué:** El inciso b) no puede usar un parámetro `int` (primitivo, se pasa por valor), pero sí puede usar `int[]` (objeto — se pasa la referencia, y las modificaciones al contenido se ven afuera). El inciso c) usa variables `static` de clase como "canal de salida" — es el patrón más acoplado, solo para demostrar la mecánica.
+**Por qué:** El inciso b) prohíbe explícitamente usar un arreglo como parámetro. La solución es crear un objeto `Resultado` — al pasarlo por parámetro, Java copia la referencia, y el método puede modificar el estado del objeto (sus campos). El inciso c) usa variables `static` como "canal de salida" — no recibe parámetros ni devuelve nada.
 
 ---
 
@@ -453,19 +457,39 @@ public boolean esCapicua(ArrayList<Integer> lista) {
 
 ### g) Sucesión de Collatz (recursiva)
 
+**El enunciado exige la clase `EjercicioSucesion` con ese nombre exacto** — no va dentro de `EjercicioListas`.
+
 La función f(n) = n/2 si par, 3n+1 si impar. Siempre llega a 1.
 
 ```java
-public List<Integer> calcularSucesion(int n) {
-    List<Integer> lista = new ArrayList<>();
-    lista.add(n);
-    if (n == 1) return lista;           // caso base
-    int siguiente = (n % 2 == 0) ? n / 2 : 3 * n + 1;
-    lista.addAll(calcularSucesion(siguiente)); // caso recursivo
-    return lista;
+package tp1.ejercicio7;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class EjercicioSucesion {
+
+    public List<Integer> calcularSucesion(int n) {
+        List<Integer> lista = new ArrayList<>();
+        lista.add(n);
+        if (n == 1) return lista;                        // caso base
+        int siguiente;
+        if (n % 2 == 0) {
+            siguiente = n / 2;
+        } else {
+            siguiente = 3 * n + 1;
+        }
+        List<Integer> resto = calcularSucesion(siguiente); // caso recursivo
+        for (Integer elem : resto) {
+            lista.add(elem);
+        }
+        return lista;
+    }
 }
 // calcularSucesion(6) → [6, 3, 10, 5, 16, 8, 4, 2, 1]
 ```
+
+**Por qué el for en vez de addAll:** `addAll` no está en la API vista en teoría. El for-each recorre la lista recursiva y agrega elemento a elemento — mismo resultado, solo con lo visto en clase.
 
 ### h) Invertir ArrayList recursivamente
 
@@ -521,6 +545,19 @@ public ArrayList<Integer> combinarOrdenado(ArrayList<Integer> lista1,
 
 **¿De qué concepto sale?** → Herencia, uso de LinkedList como estructura interna
 
+### Sequence (clase abstracta — base del diagrama)
+
+El diagrama muestra que `Queue` extiende `Sequence`. Hay que crearla primero.
+
+```java
+package tp1.ejercicio8;
+
+public abstract class Sequence {
+    public abstract int size();
+    public abstract boolean isEmpty();
+}
+```
+
 ### a) Queue\<T\>
 
 ```java
@@ -529,7 +566,7 @@ package tp1.ejercicio8;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Queue<T> {
+public class Queue<T> extends Sequence {
     protected List<T> data;
 
     public Queue() {
