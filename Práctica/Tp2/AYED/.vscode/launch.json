@@ -1,0 +1,53 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Ej1 - TestBinaryTree",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio1.TestBinaryTree"
+        },
+        {
+            "type": "java",
+            "name": "Ej3 - ContadorArbol",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio3.ContadorArbol"
+        },
+        {
+            "type": "java",
+            "name": "Ej4 - RedBinariaLlena",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio4.RedBinariaLlena"
+        },
+        {
+            "type": "java",
+            "name": "Ej5 - ProfundidadDeArbolBinario",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio5.ProfundidadDeArbolBinario"
+        },
+        {
+            "type": "java",
+            "name": "Ej6 - Transformacion",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio6.Transformacion"
+        },
+        {
+            "type": "java",
+            "name": "Ej7 - ParcialArboles (isLeftTree)",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio7.ParcialArboles"
+        },
+        {
+            "type": "java",
+            "name": "Ej8 - ParcialArboles (esPrefijo)",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio8.ParcialArboles"
+        },
+        {
+            "type": "java",
+            "name": "Ej9 - ParcialArboles (sumAndDif)",
+            "request": "launch",
+            "mainClass": "tp2.ejercicio9.ParcialArboles"
+        }
+    ]
+}

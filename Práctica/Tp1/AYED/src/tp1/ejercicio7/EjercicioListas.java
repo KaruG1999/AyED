@@ -74,20 +74,72 @@ public class EjercicioListas {
 
     // h) invertir ArrayList recursivamente
     public void invertirArrayList(ArrayList<Integer> lista) {
-        // TODO
-    }
+    invertirAux(lista, 0, lista.size() - 1);
+}
+
+    private void invertirAux(ArrayList<Integer> lista, int inicio, int fin) {
+        if (inicio < fin) {
+            // Intercambio de valores (Swap)
+            Integer temp = lista.get(inicio);
+            lista.set(inicio, lista.get(fin));
+            lista.set(fin, temp);
+        
+            // Llamada recursiva: achicamos el problema hacia el centro
+            invertirAux(lista, inicio + 1, fin - 1);
+    } 
+    // Caso base implícito: si inicio >= fin, no hace nada y termina.
+}
 
     // i) suma de LinkedList recursivamente
     public int sumarLinkedList(LinkedList<Integer> lista) {
-        // TODO
+    // Caso base: si la lista está vacía, la suma es 0
+    if (lista.isEmpty()) {
         return 0;
     }
+    
+    // Paso recursivo:
+    // 1. Extraigo el primer elemento
+    Integer n = lista.removeFirst();
+    
+    // 2. Llamo recursivamente con lo que queda de la lista
+    int sumaResto = sumarLinkedList(lista);
+    
+    // 3. Antes de devolver, vuelvo a poner el elemento para no romper la lista original
+    lista.addFirst(n);
+    
+    // 4. Devuelvo la suma total
+    return n + sumaResto;
+}
 
     // j) combinar dos listas ordenadas en una lista ordenada
-    public ArrayList<Integer> combinarOrdenado(ArrayList<Integer> lista1, ArrayList<Integer> lista2) {
-        // TODO
-        return null;
+    public List<Integer> combinarOrdenado(List<Integer> lista1, List<Integer> lista2) {
+        List<Integer> resultado = new ArrayList<>();
+        combinarRecursivo(lista1, lista2, resultado, 0, 0);
+        return resultado;
     }
+
+    private void combinarRecursivo(List<Integer> l1, List<Integer> l2, List<Integer> res, int i, int j) {
+        // Caso Base 1: Si terminó l1, agrego lo que queda de l2
+        if (i == l1.size()) {
+            while (j < l2.size()) res.add(l2.get(j++));
+            return;
+        }
+        // Caso Base 2: Si terminó l2, agrego lo que queda de l1
+        if (j == l2.size()) {
+            while (i < l1.size()) res.add(l1.get(i++));
+            return;
+        }
+
+        // Paso Recursivo: Comparo cabezas y elijo la menor
+        if (l1.get(i) <= l2.get(j)) {
+            res.add(l1.get(i));
+            combinarRecursivo(l1, l2, res, i + 1, j);
+        } else {
+            res.add(l2.get(j));
+            combinarRecursivo(l1, l2, res, i, j + 1);
+        }
+    }
+}
 
     public static void main(String[] args) {
         EjercicioListas ej = new EjercicioListas();
