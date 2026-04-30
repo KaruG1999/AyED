@@ -16,10 +16,26 @@ public class ContadorArbol {
 
     public List<Integer> numerosPares() {
         List<Integer> resultado = new ArrayList<>();
-        // TODO: Recorrer el árbol en InOrden (izquierda → raíz → derecha)
-        // y agregar al resultado todos los nodos cuyo valor sea divisible por 2.
-        // Tip: usar un método privado auxiliar que reciba el nodo y la lista acumuladora.
+        // Llamo a la funcion recorridoInOrden y le paso el arbol y la lista
+        this.recorridoInOrden(this.arbol, resultado);
         return resultado;
+    }
+
+    private void recorridoInOrden (BinaryTre<Integer> a, List<Integer> lista){
+        if  (a != null && !a.isEmpy()){
+            // Izquierda
+            if (a.hasLeftChild()) {
+                recorridoInOrden (a.getLeftChild(), lista);
+            }
+            if (a.getData() %2 == 0) {
+                lista.add(a.getData());
+            }
+            if (a.hasRightChild()) {
+                recorridoInOrden(a.getRightChild(), lista);
+            }
+
+
+        }
     }
 
     // ===================== EJERCICIO 3b: PostOrden =====================

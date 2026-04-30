@@ -88,29 +88,78 @@ public class BinaryTree<T> {
     // ===================== EJERCICIO 2a =====================
 
     public int contarHojas() {
-        // TODO: Devuelve la cantidad de hojas del árbol receptor.
-        // Una hoja es un nodo sin hijos (isLeaf() == true).
-        // Caso base: si es hoja, retornar 1.
-        // Caso recursivo: sumar las hojas del subárbol izquierdo y derecho.
-        return 0;
+        // Si esta vacio
+        if (isEmpty()) {
+            return 0; 
+        }
+        // Si es hoja
+        if (isLeaf()) {
+            return 1; 
+        }
+        // si no es hoja, delego a mis hijos
+        int hojasIzq =0;
+        int hojasDer =0;
+        // Si tiene hoja izquierda llamo a recuresion y se la paso llamando al mismo método
+        if (this.hasLeftChild()){
+            hojasIzq = this.getLeftChild().contarHojas();
+
+        }
+        // Si tiene hoja derecha llamo con recursion y le paso la hoja derecha
+        if (this.hasRightChild()) {
+            hojasDer = this.getRightChild().contarHojas();
+        }
+        
+        return hojasIzq + hojasDer;
     }
 
     // ===================== EJERCICIO 2b =====================
 
     public BinaryTree<T> espejo() {
-        // TODO: Devuelve un nuevo árbol binario espejo del receptor.
-        // El espejo se obtiene intercambiando recursivamente los hijos
-        // izquierdo y derecho en cada nodo.
-        // Ejemplo: árbol con raíz 1, izq=2, der=3 → espejo tiene raíz 1, izq=3, der=2
-        return null;
+        // Caso base: si el árbol esta vacio 
+        if (isEmpty()) {
+            return new BinaryTree<>();
+        }
+        // creo nodo que sea el de la raiz del espejo
+        BinaryTree<T> espejoRaiz = new BinaryTree<>(this.getData());
+        // Recursion y volteo de datos de los hijos 
+        if (this.hasLeftChild()) {
+            espejoRaiz.addRightChild(this.getLeftChild().espejo());
+        }
+        if (this.hasRightChild()) {
+            espejoRaiz.addLeftChild(this.getRightChild().espejo());
+        }
+        return espejoRaiz;
     }
 
     // ===================== EJERCICIO 2c =====================
 
     public void entreNiveles(int n, int m) {
-        // TODO: Imprime por consola los elementos del árbol entre los niveles n y m (inclusive).
-        // Usar recorrido por niveles (BFS con Queue).
-        // Nivel 0 = raíz. Se recorre nivel por nivel y solo se imprimen los comprendidos entre n y m.
-        // Tip: usar una Queue<BinaryTree<T>> y llevar un contador de nivel.
+    BinaryTree<T> ab = null; // "punter" vacio auxiliar 
+    Queue<BinaryTree<T>> cola = new LinkedList<BinaryTree<T>>();
+    cola.add(this); // Encolar la raíz (dirección en mem)
+    int nivel = 0;
+
+    while (!cola.isEmpty() && nivel <= m) {
+        int cantNodos = cola.size(); // Foto del nivel actual
+
+        for (int i = 0; i < cantNodos; i++) {
+            ab = cola.poll(); // SACO al que está primero y lo aguardo en aux
+
+            // Si el nivel actual me interesa, lo imprimo
+            if (nivel >= n && nivel <= m) {
+                System.out.println(ab.getData());
+            }
+
+            // ENCOLO a los hijos para que queden listos para el PRÓXIMO nivel
+            if (ab.hasLeftChild()) {
+                cola.add(ab.getLeftChild());
+            }
+            if (ab.hasRightChild()) {
+                cola.add(ab.getRightChild());
+            }
+        }
+        // Una vez que el for terminó, significa que ya procesé TODO el nivel
+        nivel++; 
     }
+}
 }
