@@ -42,10 +42,27 @@ public class ContadorArbol {
 
     public List<Integer> numerosParesPostOrden() {
         List<Integer> resultado = new ArrayList<>();
-        // TODO: Recorrer el árbol en PostOrden (izquierda → derecha → raíz)
-        // y agregar al resultado todos los nodos cuyo valor sea divisible por 2.
+        recorridoPostOrden(this.arbol, resultado);
         return resultado;
     }
+
+    private void recorridoPostOrden (BinaryTre<Integer> a, List<Integer> lista){
+        if (a != null) && !a.isEmpy() {
+            // Izquierda
+            if (a.hasLeftChild()){
+                recorrdioPostOrden(a.getLeftChild(), lista);
+            }
+            // Derecha
+            if (a.hasRightChild()){
+                recorridoPostOrden(a.getRightChild(), lista);
+            }
+            // raiz
+            if (a.getData () % 2 == 0) {
+                lista.add(a.getData());
+            }
+        }
+    }
+
 
     // ===================== MAIN =====================
 

@@ -12,16 +12,30 @@ public class RedBinariaLlena {
 
     // ===================== EJERCICIO 4b =====================
 
-    public int retardoReenvio() {
-        // TODO: Calcular el mayor retardo posible en el camino desde la raíz hasta una hoja.
-        // Estrategia: recorrido en PROFUNDIDAD (DFS).
-        // En cada camino raíz→hoja, acumular la suma de retardos.
-        // Retornar el máximo de todas las sumas posibles.
-        // Si hay más de un máximo, retornar el último hallado.
-        // Tip: usar un método recursivo que acumule la suma del camino actual
-        //      y actualice el máximo al llegar a una hoja.
-        return 0;
+        public double retardoReenvio() {
+        return (red == null || red.isEmpty()) ? 0 : rRAux(red); // si la red es vacía, el retardo es 0, sino, llamo a la función auxiliar con la raíz
+    } 
+
+    public double rRAux(BinaryTree<Double> aux) {
+        // Si es hoja, no tiene hijos a quienes reenviar: el retardo es 0
+        if (aux.isLeaf()) {
+            return 0; 
+        }
+
+        double maxHijo = 0; // Inici
+        
+        // En una red binaria LLENA, si tiene hijos, tiene ambos.
+        if (aux.hasLeftChild() && aux.hasRightChild()) {
+            double resIzq = rRAux(aux.getLeftChild());
+            double resDer = rRAux(aux.getRightChild());
+            
+            // Comparamos el resultado TOTAL de las ramas, no el dato del nodo hijo
+            maxHijo = (resDer >= resIzq) ? resDer : resIzq;
+        }
+        
+        return aux.getData() + maxHijo;
     }
+
 
     // ===================== MAIN =====================
 
@@ -76,4 +90,4 @@ public class RedBinariaLlena {
         System.out.println("Mayor retardo: " + r.retardoReenvio());
         // Esperado: 34 (camino: 10 → 3 → 9 → 12 = 10+3+9+12)
     }
-}
+
