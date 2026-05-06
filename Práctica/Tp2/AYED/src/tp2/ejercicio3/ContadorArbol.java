@@ -21,8 +21,8 @@ public class ContadorArbol {
         return resultado;
     }
 
-    private void recorridoInOrden (BinaryTre<Integer> a, List<Integer> lista){
-        if  (a != null && !a.isEmpy()){
+    private void recorridoInOrden (BinaryTree<Integer> a, List<Integer> lista){
+        if  (a != null && !a.isEmpty()){
             // Izquierda
             if (a.hasLeftChild()) {
                 recorridoInOrden (a.getLeftChild(), lista);
@@ -46,11 +46,11 @@ public class ContadorArbol {
         return resultado;
     }
 
-    private void recorridoPostOrden (BinaryTre<Integer> a, List<Integer> lista){
-        if (a != null) && !a.isEmpy() {
+    private void recorridoPostOrden (BinaryTree<Integer> a, List<Integer> lista){
+        if ((a != null) && !a.isEmpty()) {
             // Izquierda
             if (a.hasLeftChild()){
-                recorrdioPostOrden(a.getLeftChild(), lista);
+                recorridoPostOrden(a.getLeftChild(), lista);
             }
             // Derecha
             if (a.hasRightChild()){

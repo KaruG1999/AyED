@@ -2,69 +2,102 @@ package tp2.ejercicio9;
 
 import tp2.ejercicio1.BinaryTree;
 
-public class ParcialArboles {
+class DobleInteger {
+    private int suma;
+    private int dif;
 
-    private BinaryTree<Integer> arbol;
-
-    public ParcialArboles(BinaryTree<Integer> arbol) {
-        this.arbol = arbol;
+    public DobleInteger(int suma, int dif) {
+        this.suma = suma;
+        this.dif = dif;
     }
+
+    public int getSuma() {
+        return suma;
+    }
+
+    public int getDif() {
+        return dif;
+    }
+
+    @Override
+    public String toString() {
+        return "DobleInteger{suma=" + suma + ", dif=" + dif + "}";
+    }
+}
+
+public class ParcialArboles {
 
     // ===================== EJERCICIO 9 =====================
 
-    public BinaryTree<?> sumAndDif(BinaryTree<Integer> arbol) {
-        // TODO: Devuelve un NUEVO árbol donde cada nodo contiene dos valores (NodeInfo):
-        //   - suma: acumulado de todos los valores desde la raíz hasta el nodo actual (inclusive)
-        //   - diferencia: valor_del_nodo_actual - valor_del_nodo_padre
-        //     (en la raíz, el padre vale 0, por lo que diferencia = valor_raíz - 0 = valor_raíz)
-        //
-        // Tip: usar un método auxiliar recursivo que reciba:
-        //   - el nodo actual del árbol original
-        //   - la suma acumulada hasta el padre
-        //   - el valor del padre
-        return null;
+    /*  1. si el recorrido no es por niveles, usar helper */
+
+    public static BinaryTree<DobleInteger> sumAndDif(BinaryTree<Integer> arbol) {
+
+        BinaryTree<DobleInteger> nuevoArbol = new BinaryTree<DobleInteger>();
+
+        if(!arbol.isEmpty())
+
+            sumAndDif(arbol,nuevoArbol,0,0);
+
+        return nuevoArbol;
+
+    }
+
+    
+
+    private void sumAndDif(BinaryTree<Integer> arbol, BinaryTree<DobleInteger> nuevoArbol, Integer sum, Integer padre) {
+
+        int suma = sum + arbol.getData();
+
+        int dif = arbol.getData() - padre;
+
+        
+
+        nuevoArbol.setData(new DobleInteger(suma,dif));
+
+        
+
+        if(arbol.hasLeftChild()) {
+
+            nuevoArbol.addLeftChild(new BinaryTree<DobleInteger>());
+
+            sumAndDif(arbol.getLeftChild(),nuevoArbol.getLeftChild(),suma,arbol.getData());
+
+        }
+
+        if(arbol.hasRightChild()) {
+
+            nuevoArbol.addRightChild(new BinaryTree<DobleInteger>());
+
+            sumAndDif(arbol.getRightChild(),nuevoArbol.getRightChild(),suma,arbol.getData());
+
+        }
+
     }
 
     // ===================== MAIN =====================
 
     public static void main(String[] args) {
 
-        // Árbol del ejemplo del enunciado:
-        //          20
-        //         /  \
-        //        5    30
-        //       / \   / \
-        //      -5  10 50  -9
-        //         /   \
-        //         1    4
-        //               \
-        //                6
+        BinaryTree<Integer> arbol = new BinaryTree();
 
-        BinaryTree<Integer> tree = new BinaryTree<>(20);
-        BinaryTree<Integer> n5   = new BinaryTree<>(5);
-        BinaryTree<Integer> n30  = new BinaryTree<>(30);
-        BinaryTree<Integer> nm5  = new BinaryTree<>(-5);
-        BinaryTree<Integer> n10  = new BinaryTree<>(10);
-        BinaryTree<Integer> n50  = new BinaryTree<>(50);
-        BinaryTree<Integer> nm9  = new BinaryTree<>(-9);
-        BinaryTree<Integer> n1   = new BinaryTree<>(1);
-        BinaryTree<Integer> n4   = new BinaryTree<>(4);
-        BinaryTree<Integer> n6   = new BinaryTree<>(6);
+        
 
-        tree.addLeftChild(n5);
-        tree.addRightChild(n30);
-        n5.addLeftChild(nm5);
-        n5.addRightChild(n10);
-        n30.addLeftChild(n50);
-        n30.addRightChild(nm9);
-        n10.addLeftChild(n1);
-        n50.addRightChild(n4);
-        n4.addRightChild(n6);
+        arbol.setData(8);
 
-        ParcialArboles pa = new ParcialArboles(tree);
-        BinaryTree<?> resultado = pa.sumAndDif(tree);
+        arbol.addRightChild(new BinaryTree<>(10));
 
-        System.out.println("=== Ejercicio 9 ===");
+        arbol.addLeftChild(new BinaryTree<>(15));
+
+        
+
+        arbol.inOrder();
+
+        System.out.println("");
+
+        ParcialArboles.sumAndDif(arbol).inOrder();
+
+    }
         if (resultado != null) {
             System.out.println("Raíz: " + resultado.getData()); // esperado: 20|20
             // Árbol esperado:

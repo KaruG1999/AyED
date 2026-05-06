@@ -13,20 +13,62 @@ public class ParcialArboles {
     // ===================== EJERCICIO 7 =====================
 
     public boolean isLeftTree(int num) {
-        // TODO: Devuelve true si el subárbol con raíz "num" tiene en su subárbol
-        // izquierdo una cantidad MAYOR ESTRICTA de árboles con un único hijo
-        // que en su subárbol derecho. False en caso contrario.
-        //
-        // Consideraciones:
-        //   - Si "num" no está en el árbol → false
-        //   - Si el árbol con raíz "num" no tiene una de sus ramas → esa rama tiene -1
-        //   - Un árbol tiene "único hijo" si tiene exactamente uno de los dos hijos (no ambos, no ninguno)
-        //
-        // Estrategia: recorrer UNA SOLA VEZ el árbol completo para:
-        //   1. Encontrar el nodo con valor "num"
-        //   2. Una vez encontrado, contar los de único hijo en cada subárbol
-        return false;
+        // Primero busca el nodo
+        BinaryTree<Integer> nodo = buscarNodo (this.arbol, num);
+
+        if (nodo == null || nodo.isEmpty()) {return false;}
+
+        // Inicializa cantidades con -1 por requisito del enunciado 
+        int cantIzq= -1;
+        int cantDer= -1;
+
+        if (nodo.hasLeftChild()) {
+            cantIzq = contarNodosConUnicoHijo(nodo.getLeftChild());
+        }
+        if (nodo.hasRightChild()){
+            cantDer = contarNodosConUnicoHijo (nodo.getRightChild());
+        }
+        
+        // Retorna true si la cantidad de la Izquierda es mayor 
+        return cantIzq > cantDer;
     }
+
+
+        // Recorrido PreOrden (analiza primero raiz)
+     private BinaryTree<Integer> buscarNodo (BinaryTree<Integer> a, int num){
+         if (a == null || a.isEmpty()){ return null;}
+
+            // Si le nodo raiz tiene el dato, retorno ese arbol/subarbol
+         if ( a.getData() == num) {return a;}
+        
+         BinaryTree<Integer> res = null;
+
+         if (a.hasLeftChild()) { res = buscarNodo(a.getLeftChild(), num); }
+
+         // Si lo encuentra no sigue bsucando por el derecho
+         if (res == null && a.hasRightChild()) {res = buscarNodo (a.getRightChild(), num);}
+
+         return res;
+
+        }
+
+    private int contarNodosConUnicoHijo (BinaryTree<Integer> nodo){
+
+        if (nodo == null || nodo.isEmpty()) {return 0;}
+        int aux=0;
+
+        boolean tieneHijoIzq = nodo.hasLeftChild() && !nodo.hasRightChild();
+        boolean tieneHijoDer = !nodo.hasLeftChild() && nodo.hasRightChild(); 
+
+        if (tieneHijoIzq || tieneHijoDer) { aux=1; }
+
+        // Recursion 
+        if (nodo.hasLeftChild()) {aux += contarNodosConUnicoHijo(nodo.getLeftChild());}
+        if (nodo.hasRightChild()) {aux += contarNodosConUnicoHijo(nodo.getRightChild());}
+
+        return aux;
+    }
+
 
     // ===================== MAIN =====================
 

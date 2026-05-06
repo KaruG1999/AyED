@@ -1,6 +1,8 @@
 package tp2.ejercicio5;
 
 import tp2.ejercicio1.BinaryTree;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ProfundidadDeArbolBinario {
 
@@ -13,12 +15,41 @@ public class ProfundidadDeArbolBinario {
     // ===================== EJERCICIO 5 =====================
 
     public int sumaElementosProfundidad(int p) {
-        // TODO: Devuelve la suma de todos los nodos que se encuentren
-        // exactamente a la profundidad p.
-        // Profundidad 0 = raíz.
-        // Tip: usar recursión con un parámetro que vaya decrementando
-        //      la profundidad buscada en cada nivel.
+        // Verificación inicial de seguridad
+    if (this.arbol == null || this.arbol.isEmpty() || p < 0) {
         return 0;
+    }
+
+    Queue<BinaryTree<Integer>> cola = new LinkedList<>();
+    cola.add(this.arbol);
+    int nivelActual = 0;
+    int sumaFinal = 0;
+
+    // Se recorre mientras haya nodos y no hayamos superado el nivel buscado
+    while (!cola.isEmpty() && nivelActual <= p) {
+        // Se obtiene la cantidad de nodos en el nivel actual antes de procesar
+        int nodosEnNivel = cola.size();
+
+        for (int i = 0; i < nodosEnNivel; i++) {
+            BinaryTree<Integer> nodo = cola.poll();
+
+            // Si llegamos a la profundidad p, sumamos el dato del nodo
+            if (nivelActual == p) {
+                sumaFinal += nodo.getData();
+            }
+
+            // Solo encolamos hijos si aún no llegamos al nivel p para ahorrar memoria
+            if (nivelActual < p) {
+                if (nodo.hasLeftChild()) cola.add(nodo.getLeftChild());
+                if (nodo.hasRightChild()) cola.add(nodo.getRightChild());
+            }
+        }
+        // Pasamos al siguiente nivel de profundidad
+        nivelActual++;
+    }
+    
+    return sumaFinal;
+    
     }
 
     // ===================== MAIN =====================

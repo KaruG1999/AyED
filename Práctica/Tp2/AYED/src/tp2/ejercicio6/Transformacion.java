@@ -1,5 +1,7 @@
 package tp2.ejercicio6;
 
+import java.util.ArrayList;
+
 import tp2.ejercicio1.BinaryTree;
 
 public class Transformacion {
@@ -13,17 +15,28 @@ public class Transformacion {
     // ===================== EJERCICIO 6 =====================
 
     public BinaryTree<Integer> suma() {
-        // TODO: Devuelve un NUEVO árbol donde cada nodo contiene
-        // la suma de todos los elementos de su subárbol izquierdo y derecho.
-        // (No incluye el valor del propio nodo, solo sus hijos.)
-        // Los subárboles vacíos valen 0.
-        //
-        // Reflexión: ¿Tu solución recorre cada subárbol solo una vez?
-        // Tip para hacerlo en un solo recorrido:
-        //   Usar un método auxiliar que retorne la suma total del subárbol
-        //   y construya el nuevo árbol al mismo tiempo (PostOrden).
-        return null;
+        if (this.arbol != null && !this.arbol.isEmpty()) {
+            auxSuma(this.arbol);
+        }
+        return this.arbol;
     }
+
+    private int auxSuma (BinaryTree<Integer> nodo){
+        
+        if (nodo == null || nodo.isEmpty()){ return 0;}
+
+        int valorOrig = nodo.getData();
+
+        // Recursion postOrden
+        int sumaIzq = auxSuma(nodo.getLeftChild());
+        int sumaDer = auxSuma(nodo.getRightChild());
+
+        // luego actualizamos nodo raiz con la suma de ambos
+        nodo.setData(sumaIzq + sumaDer);
+
+        return valorOrig + sumaIzq + sumaDer;
+    }
+
 
     // ===================== MAIN =====================
 

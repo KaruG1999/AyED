@@ -13,10 +13,10 @@ public class RedBinariaLlena {
     // ===================== EJERCICIO 4b =====================
 
         public double retardoReenvio() {
-        return (red == null || red.isEmpty()) ? 0 : rRAux(red); // si la red es vacía, el retardo es 0, sino, llamo a la función auxiliar con la raíz
+            return (red == null || red.isEmpty()) ? 0 : rRAux(red); // si la red es vacía, el retardo es 0, sino, llamo a la función auxiliar con la raíz
     } 
 
-    public double rRAux(BinaryTree<Double> aux) {
+    public double rRAux(BinaryTree<Integer> aux) {
         // Si es hoja, no tiene hijos a quienes reenviar: el retardo es 0
         if (aux.isLeaf()) {
             return 0; 
@@ -90,4 +90,4 @@ public class RedBinariaLlena {
         System.out.println("Mayor retardo: " + r.retardoReenvio());
         // Esperado: 34 (camino: 10 → 3 → 9 → 12 = 10+3+9+12)
     }
-
+}

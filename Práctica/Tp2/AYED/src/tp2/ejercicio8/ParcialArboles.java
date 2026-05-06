@@ -13,19 +13,23 @@ public class ParcialArboles {
     // ===================== EJERCICIO 8 =====================
 
     public boolean esPrefijo(BinaryTree<Integer> arbol1, BinaryTree<Integer> arbol2) {
-        // TODO: Devuelve true si arbol1 es prefijo de arbol2.
-        //
-        // Un árbol arbol1 es PREFIJO de arbol2 cuando arbol1 coincide
-        // con la parte inicial de arbol2 tanto en CONTENIDO como en ESTRUCTURA.
-        //
-        // Casos:
-        //   - Si arbol1 es null (vacío) → true (árbol vacío es prefijo de cualquiera)
-        //   - Si arbol1 no es null pero arbol2 es null → false
-        //   - Si los datos no coinciden → false
-        //   - Si arbol1 tiene hijo izquierdo pero arbol2 no → false
-        //   - Si arbol1 tiene hijo derecho pero arbol2 no → false
-        //   - Recursivamente: esPrefijo(izq1, izq2) && esPrefijo(der1, der2)
-        return false;
+        // Si arbol1 no tiene más nodos, es porque coincidió toda la estructura previa
+        if (arbol1 == null || arbol1.isEmpty()) {
+            return true; 
+        }
+        // Si arbol1 tiene datos pero arbol2 no, no puede ser prefijo
+        if (arbol2 == null || arbol2.isEmpty()) {
+            return false;
+        }
+        // Comparación de datos
+        if (!arbol1.getData().equals(arbol2.getData())) {
+            return false;
+        }
+
+        // Recursión: debe coincidir tanto la rama izquierda como la derecha
+        // Se usa el operador && para que si la izquierda da false, ni siquiera intente la derecha
+        return esPrefijo(arbol1.getLeftChild(), arbol2.getLeftChild()) && 
+           esPrefijo(arbol1.getRightChild(), arbol2.getRightChild());
     }
 
     // ===================== MAIN =====================

@@ -1,0 +1,53 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Ej2 - RecorridosAG",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio2.RecorridosAG"
+        },
+        {
+            "type": "java",
+            "name": "Ej4 - AnalizadorArbol",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio4.AnalizadorArbol"
+        },
+        {
+            "type": "java",
+            "name": "Ej6 - RedDeAguaPotable",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio6.RedDeAguaPotable"
+        },
+        {
+            "type": "java",
+            "name": "Ej7 - Caminos",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio7.Caminos"
+        },
+        {
+            "type": "java",
+            "name": "Ej8 - Navidad",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio8.Navidad"
+        },
+        {
+            "type": "java",
+            "name": "Ej9 - ParcialArboles (esDeSeleccion)",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio9.ParcialArboles"
+        },
+        {
+            "type": "java",
+            "name": "Ej10 - ParcialArboles (resolver - camino filtrado)",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio10.ParcialArboles"
+        },
+        {
+            "type": "java",
+            "name": "Ej11 - ParcialArboles (resolver - arbol creciente)",
+            "request": "launch",
+            "mainClass": "tp3.ejercicio11.ParcialArboles"
+        }
+    ]
+}
