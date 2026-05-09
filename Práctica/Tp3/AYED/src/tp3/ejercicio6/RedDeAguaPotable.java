@@ -1,5 +1,7 @@
 package tp3.ejercicio6;
 
+import java.util.List;
+
 import tp3.ejercicio1.GeneralTree;
 
 public class RedDeAguaPotable {
@@ -13,17 +15,27 @@ public class RedDeAguaPotable {
     // ===================== EJERCICIO 6 =====================
 
     public double minimoCaudal(double caudal) {
-        // TODO: calcular el mínimo caudal que llega a una hoja
-        // Si el nodo es hoja → retornar el caudal que recibió (es una casa)
-        // Si tiene hijos → dividir caudal entre la cantidad de hijos
-        //                  y llamar recursivamente con cada hijo
-        // Retornar el mínimo entre los resultados de todos los hijos
+        if (this.red != null && !this.red.isEmpty()) {
+            return 0.0;
+        }
+
         return minimoCaudalAux(this.red, caudal);
     }
 
     private double minimoCaudalAux(GeneralTree<Character> nodo, double caudal) {
-        // TODO: implementar aquí la lógica recursiva
-        return 0.0;
+        if (nodo.isLeaf()) { return caudal;}
+        // Lista que contiene a los hijos y de ahí puedo obtener la cantidad 
+        List<GeneralTree<Character>> hijos = nodo.getChildren();
+        double caudalDividido = caudal / hijos.size();
+        // Inicializo min y recorro hijos
+        double min = Double.MAX_VALUE;
+        for (GeneralTree<Character> hijo: hijos) {
+            double caudalHijo = minimoCaudalAux(hijo, caudalDividido);
+            // Actualizo el minimo
+            if (caudalHijo < min){ min = caudalHijo; }
+
+        }
+        return min;
     }
 
     // ===================== MAIN =====================

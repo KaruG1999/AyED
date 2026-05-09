@@ -15,25 +15,34 @@ public class Caminos {
     // ===================== EJERCICIO 7 =====================
 
     public List<Integer> caminoAHojaMasLejana() {
-        // TODO: retornar el camino desde la raíz hasta la hoja más lejana
-        // Si hay más de un camino máximo, retornar el PRIMERO que se encuentre
-        // Estrategia: recorrido en profundidad (DFS / PreOrden)
-        // Pasar el camino actual como parámetro y actualizar el mejor encontrado
-
         List<Integer> mejorCamino = new LinkedList<>();
         List<Integer> caminoActual = new LinkedList<>();
-        caminoAHojaMasLejanaAux(this.arbol, caminoActual, mejorCamino);
+        if (this.arbol != null && !this.arbol.isEmpty()){
+            caminoAHojaMasLejanaAux(this.arbol, caminoActual, mejorCamino);
+        }
         return mejorCamino;
     }
 
     private void caminoAHojaMasLejanaAux(GeneralTree<Integer> nodo,
                                           List<Integer> caminoActual,
                                           List<Integer> mejorCamino) {
-        // TODO:
+        
         // 1. Agregar el dato del nodo al camino actual
+        caminoActual.add(nodo.getData());
         // 2. Si es hoja: comparar longitud con el mejor camino → actualizar si es más largo
-        // 3. Si no es hoja: recursión sobre cada hijo
+        if (nodo.isLeaf()){
+            if (caminoActual.size() > mejorCamino.size()) {
+                mejorCamino.clear();
+                mejorCamino.addAll(caminoActual);
+            }
+        } else {
+            // 3. Si no es hoja: recursión sobre cada hijo
+            for (GeneralTree<Integer> hijo: nodo.getChildren()){
+                caminoAHojaMasLejanaAux(hijo, caminoActual, mejorCamino);
+            }
+        }
         // 4. Al volver de la recursión: quitar el dato del camino actual (backtracking)
+        caminoActual.remove(caminoActual.size()-1);
     }
 
     // ===================== MAIN =====================

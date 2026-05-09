@@ -10,42 +10,93 @@ public class RecorridosAG {
     // ===================== EJERCICIO 2a =====================
 
     public List<Integer> numerosImparesMayoresQuePreOrden(GeneralTree<Integer> a, Integer n) {
-        // TODO: recorrido PreOrden — raíz primero, luego hijos
+        // recorrido PreOrden — raíz primero, luego hijos
         List<Integer> resultado = new LinkedList<>();
-        preOrden(a, n, resultado);
+        if (a != null && !a.isEmpty() ) {
+            preOrden(a, n, resultado);
+        }
         return resultado;
     }
 
-    private void preOrden(GeneralTree<Integer> nodo, Integer n, List<Integer> resultado) {
-        // TODO: visitar raíz, luego recursión sobre cada hijo
-        // Condición: dato es impar (% 2 != 0) Y mayor que n
+    private void preOrden(GeneralTree<Integer> nodo, Integer n, List<Integer> lista) {
+        if ((Integer) nodo.getData() > n & (Integer)nodo.getData()%2 !=0 ) {
+            lista.add( (Integer)nodo.getData());
+        }
+
+        for (GeneralTree<Integer> hijo: nodo.getChildren()){
+             preOrden(hijo, n, lista);
+        }
     }
 
     public List<Integer> numerosImparesMayoresQueInOrden(GeneralTree<Integer> a, Integer n) {
-        // TODO: recorrido InOrden — primer hijo, raíz, hijos restantes
+        //recorrido InOrden — primer hijo, raíz, hijos restantes
         List<Integer> resultado = new LinkedList<>();
-        inOrden(a, n, resultado);
+        if (a != null && !a.isEmpty()) {
+            inOrden(a, n, resultado);
+        }
         return resultado;
     }
 
     private void inOrden(GeneralTree<Integer> nodo, Integer n, List<Integer> resultado) {
-        // TODO: recursión primer hijo → raíz → resto de hijos
+        List<GeneralTree<Integer>> hijos = nodo.getChildren();
+        // Si existe proceso el primer hijo 
+        if (!hijos.isEmpty()) {
+            inOrden(hijos.get(0), n, resultado);
+        }
+        // proceso la raiz
+        int dato = nodo.getData();
+        if (dato > n && dato%2 !=0) {
+            resultado.add(dato);
+        }
+        // Recursivo para el resto de los hijos 
+        for (int i=1; i<hijos.size() ; i++){
+            inOrden(hijos.get(i), n, resultado);
+        }
     }
 
     public List<Integer> numerosImparesMayoresQuePostOrden(GeneralTree<Integer> a, Integer n) {
-        // TODO: recorrido PostOrden — hijos primero, luego raíz
+        // recorrido PostOrden — hijos primero, luego raíz
         List<Integer> resultado = new LinkedList<>();
         postOrden(a, n, resultado);
         return resultado;
     }
 
     private void postOrden(GeneralTree<Integer> nodo, Integer n, List<Integer> resultado) {
-        // TODO: recursión sobre hijos → luego procesar raíz
+         // primero recorro los hijos
+         for (GeneralTree<Integer> hijo: nodo.getChildren()){
+            postOrden(hijo, n, resultado);
+         }
+         // procesa raiz al final
+         int dato= nodo.getData();
+         if (dato > n && dato%2 !=0){
+            resultado.add(dato);
+         }
+         
+
     }
 
     public List<Integer> numerosImparesMayoresQuePorNiveles(GeneralTree<Integer> a, Integer n) {
-        // TODO: recorrido por niveles con Queue
         List<Integer> resultado = new LinkedList<>();
+
+        if (a == null || a.isEmpty()) {
+            return resultado;
+        }
+
+        Queue<GeneralTree<Integer>> cola = new LinkedList<>();
+        cola.add(a);
+
+        while (!a.isEmpty()) {
+            GeneralTree<Integer> aux = cola.remove();
+            // Aplicp filtro
+            int dato = aux.getData();
+            if (dato > n && dato%2 !=0){
+                resultado.add(dato);
+            }
+            // Encolamos el resto de los hijos 
+            for (GeneralTree<Integer> hijo: aux.getChildren()) {
+                cola.add(hijo);
+            }
+        }
         return resultado;
     }
 
@@ -56,9 +107,6 @@ public class RecorridosAG {
     // Habría que restringir con: public List<T> imparesMayoresQue(T n)
     // y dentro no podríamos usar % ni > directamente.
     //
-    // Solución habitual: usar Comparable<T> o castear, o pasar un Predicate<T>.
-    // En la implementación habría que pedir que T extienda Number o Comparable.
-
     // ===================== MAIN =====================
 
     public static void main(String[] args) {

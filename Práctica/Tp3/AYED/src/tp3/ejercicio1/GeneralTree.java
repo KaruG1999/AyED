@@ -103,12 +103,6 @@ public class GeneralTree<T> {
         l.add(this.getData());
     }
 
-    public List<T> inOrder() {
-        List<T> lista = new LinkedList<>();
-        this.inOrder(lista);
-        return lista;
-    }
-
     // Recorrido por niveles(BFS) !! Importante
     public List<T> traversalLevel() {
         List<T> result = new LinkedList<>();
@@ -174,20 +168,51 @@ public class GeneralTree<T> {
 
     public int ancho() {
         if (this != null && !this.isEmpty()){
-            
+            int anchoMax = 0;
+            Queue<GeneralTree<T>> cola = new LinkedList<>();
+            cola.add(this);
+            GeneralTree<T> aux;   // nodo axiliar 
+
+            while (!cola.isEmpty()){
+                int tamañoCola = cola.size(); // cantidad nodos en nivel actual
+                anchoMax = Math.max(anchoMax, tamañoCola);
+
+                for (int i=0; i<tamañoCola ; i++) {
+                    aux = cola.remove(); // El nodo lo coloco en aux y obtengo sus hijospara recorrerlos
+                    for (GeneralTree<T> hijo: aux.getChildren()){
+                        cola.add(hijo);
+                    }
+                }
+            }
+            return anchoMax;
         }
-        GeneralTree<T> 
-
-
-        return 0;
+        return -1;
     }
 
     // ===================== EJERCICIO 5 — TODO =====================
 
     public boolean esAncestro(T a, T b) {
-        // TODO: Ejercicio 5
-        // "a" es ancestro de "b" si existe un camino de a hacia b
-        // Buscar el nodo con dato "a"; una vez encontrado, buscar "b" en su subárbol
+        if (a == null || b== null || this.isEmpty()) {
+            return false;
+        }
+        // Busco el nodo A
+        GeneralTree<T> nodoA = buscarNodo (this, a);
+        // Si existe A, busco b
+        if (nodoA != null) {
+            return buscarNodo(nodoA, b) != null;
+        }
         return false;
+    }
+
+    // Método interno de busqueda 
+    private GeneralTree<T> buscarNodo (GeneralTree<T> nodo, T dato){
+        if (nodo.getData().equals(dato)) return nodo;
+
+        for (GeneralTree<T> hijo: nodo.getChildren()) {
+            GeneralTree<T> res= buscarNodo(hijo, dato);
+            if (res !=null)
+                return res;
+        }
+        return null;
     }
 }

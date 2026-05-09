@@ -10,12 +10,39 @@ public class AnalizadorArbol {
     // ===================== EJERCICIO 4b =====================
 
     public double devolverMaximoPromedio(GeneralTree<AreaEmpresa> arbol) {
-        // TODO: recorrido por niveles con Queue
-        // Para cada nivel: acumular la suma de tardanzas y contar nodos
-        // Al terminar cada nivel: calcular promedio y actualizar el máximo
-        // Retornar el mayor promedio encontrado
+        if (arbol != null && !arbol.isEmpty()) {
+            return 0.0;
+        }
+        return recorridoNiveles(arbol);
+    }
 
-        return 0.0;
+    private double recorridoNiveles (GeneralTree<AreaEmpresa> a){
+
+        double maxProm = -1;
+        Queue<GeneralTree<AreaEmpresa>> cola = new LinkedList<>();
+        cola.add(a);
+
+        if (!cola.isEmpty()) {
+            int nodosEnNivel =cola.size();
+            double sumaNivel=0;
+            // Proceso nodos del mismo nivel
+            for (int i=0; i<nodosEnNivel; i++) {
+                GeneralTree<AreaEmpresa> nodoAux = cola.remove();
+
+                // sumo tardanza de nivel actual
+                sumaNivel += nodoAux.getData().getTardanza();
+                // agrego hijos a la cola
+                for (GeneralTree<AreaEmpresa> hijo: nodoAux.getChildren()){
+                    cola.add(hijo);
+                }
+            }
+            // Aca sumo y saco promedio de nivel
+            double promedioActual = sumaNivel / nodosEnNivel;
+            if (promedioActual > maxProm){
+                maxProm = promedioActual;
+            } 
+        }
+        return maxProm;
     }
 
     // ===================== MAIN =====================

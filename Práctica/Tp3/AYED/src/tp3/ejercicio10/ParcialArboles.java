@@ -1,6 +1,8 @@
 package tp3.ejercicio10;
 
 import tp3.ejercicio1.GeneralTree;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,41 +11,31 @@ public class ParcialArboles {
     // ===================== EJERCICIO 10 =====================
 
     public static List<Integer> resolver(GeneralTree<Integer> arbol) {
-        // TODO: retornar el "camino filtrado de valor máximo"
-        //
-        // El "camino de valor máximo" se obtiene calculando para cada camino raíz→hoja:
-        //    suma de (valor_del_nodo * nivel_del_nodo)   (nivel raíz = 0)
-        //
-        // "Filtrado" significa: agregar al resultado solo los nodos con valor 1 (los 0 se omiten)
-        //
-        // Si hay más de un camino con el mismo valor máximo → retornar el PRIMERO.
-        //
-        // Estrategia: DFS con backtracking, pasando el camino actual y el valor acumulado.
-        // Comparar con el mejor valor encontrado hasta el momento.
-        //
-        // IMPORTANTE: no se puede hacer en dos pasadas (construir lista con 0/1 y luego filtrar).
-        // Hay que filtrar directamente al construir el camino resultado.
-
         List<Integer> mejorCamino = new LinkedList<>();
-        List<Integer> caminoActual = new LinkedList<>();
-        resolverAux(arbol, 0, 0, caminoActual, mejorCamino, new int[]{Integer.MIN_VALUE});
+        if (arbol != null && !arbol.isEmpty()){
+            resolverAux(arbol, new ArrayList<>(), mejorCamino);
+        }
         return mejorCamino;
-    }
+    } 
 
     private static void resolverAux(GeneralTree<Integer> nodo,
-                                    int nivel,
-                                    int valorAcumulado,
                                     List<Integer> caminoActual,
-                                    List<Integer> mejorCamino,
-                                    int[] mejorValor) {
-        // TODO:
-        // 1. Calcular el aporte de este nodo: nodo.getData() * nivel
-        // 2. Actualizar el valor acumulado del camino
-        // 3. Si el valor del nodo es 1: agregarlo al camino actual
-        // 4. Si es hoja: comparar valorAcumulado con mejorValor[0]
-        //               si es mayor → actualizar mejorValor y copiar caminoActual en mejorCamino
-        // 5. Si no es hoja: recursión sobre cada hijo con nivel+1
-        // 6. Backtracking: si había agregado el nodo, quitarlo
+                                    List<Integer> mejorCamino) {
+        
+         caminoActual.add(nodo.getData());
+            // Si es una hoja (final) comparo con mejor camino y actualizo si es necesario
+         if (nodo.isLeaf()) {
+            if (caminoActual.size() > mejorCamino.size()){
+                mejorCamino.clear();
+                mejorCamino.addAll(caminoActual);
+            }            
+         } else {
+            for (GeneralTree<Integer> hijo: nodo.getChildren()){
+                resolverAux(hijo, caminoActual,mejorCamino);
+            }
+         }
+         // Limpiar la lista caminoo actual
+         caminoActual.remove(caminoActual.size()-1);
     }
 
     // ===================== MAIN =====================

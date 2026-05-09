@@ -7,32 +7,33 @@ public class ParcialArboles {
 
     // ===================== EJERCICIO 9 =====================
 
-    public static boolean esDeSeleccion(GeneralTree<Integer> arbol) {
-        // TODO: retornar true si el árbol es "de selección"
-        // Un árbol es de selección si CADA NODO interno tiene en su raíz
-        // el valor del MENOR de sus hijos directos.
-        // Las hojas no tienen restricción (no tienen hijos que comparar).
-        //
-        // Estrategia: PostOrden
-        //   - Para cada nodo con hijos: verificar que getData() == min(hijos)
-        //   - Si alguno falla → false
-        //   - Si todos pasan → true
-        //
-        // La forma más limpia es devolver el mínimo del subárbol desde abajo
-        // (PostOrden) y verificar la condición al mismo tiempo.
+    public static boolean esDeSeleccion (GeneralTree<Integer> arbol){
+        if (arbol == null || !arbol.isEmpty()){
+            return false;
+        }
+        return recorrido(arbol);
+    }   
 
-        return esDeSeleccionAux(arbol);
+    private static boolean recorrido (GeneralTree<Integer> nodo){
+        // Si es hoja siempre cumple
+        if (nodo.isLeaf()) {return true;}
+        // Inicializo var que guarda valor de hijo min y lista que contiene los hijos
+        int minHijos = Integer.MAX_VALUE;
+        List<GeneralTree<Integer>> hijos = nodo.getChildren();
+
+        // Recorro una sola vez los hijos
+        for (GeneralTree<Integer> hijo: hijos){
+            if (!recorrido(hijo)){
+                return false;
+            }
+
+            if (hijo.getData() < minHijos){
+                minHijos = hijo.getData();
+            }   
+        }
+        return nodo.getData().equals(minHijos);  
     }
 
-    private static boolean esDeSeleccionAux(GeneralTree<Integer> nodo) {
-        // TODO:
-        // Si es hoja → retornar true (condición vacuamente cumplida)
-        // Si tiene hijos:
-        //   - encontrar el hijo con el menor getData()
-        //   - si nodo.getData() != menor hijo → return false
-        //   - verificar recursivamente todos los hijos
-        return false;
-    }
 
     // ===================== MAIN =====================
 

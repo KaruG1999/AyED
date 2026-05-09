@@ -2,6 +2,7 @@ package tp3.ejercicio11;
 
 import tp3.ejercicio1.GeneralTree;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class ParcialArboles {
@@ -9,26 +10,40 @@ public class ParcialArboles {
     // ===================== EJERCICIO 11 =====================
 
     public static boolean resolver(GeneralTree<Integer> arbol) {
-        // TODO: retornar true si el árbol es "creciente"
-        //
-        // Un árbol es creciente si para cada nivel k:
-        //   cantidad_de_nodos_en_nivel_k == cantidad_de_nodos_en_nivel_(k-1) + 1
-        //
-        // El nivel 0 siempre tiene 1 nodo (la raíz), entonces:
-        //   nivel 0 → 1 nodo
-        //   nivel 1 → 2 nodos
-        //   nivel 2 → 3 nodos
-        //   nivel k → k+1 nodos
-        //
-        // Estrategia: recorrido por niveles (BFS) con null como separador de niveles
-        //   - Para cada nivel: contar nodos
-        //   - Verificar que el conteo es el esperado
-        //   - Si algún nivel no coincide → return false
-        //
-        // Se recorre la estructura SOLO 1 vez.
-
-        return false;
+        if (arbol == null && !arbol.isEmpty()){
+            return false;
+        }
+        return resolverAux (arbol);
     }
+
+    // Recorrido por niveles 
+    public static boolean resolverAux (GeneralTree<Integer> nodo){
+        
+        // Encolo el arbol (nivel actual)
+        Queue<GeneralTree<Integer>> cola = new LinkedList<>();
+        cola.add(nodo);
+        int cantAnterior=0;
+        
+        while (!cola.isEmpty()){
+            int cantAct = cola.size();
+            // Deberia pasarle el tamaño actual a los hijos y estos comparan tamaño con su nivel
+            if ( cantAct == cantAnterior+1 ){
+                cantAnterior = cantAct;
+            } else {
+                return false;
+            }
+            // Vaciamos este nivel y preparamos el que sigue
+            for (int i=0; i<cantAct; i++){
+                GeneralTree<Integer> aux = cola.remove();
+
+                for (GeneralTree<Integer> hijo: aux.getChildren()){
+                    cola.add(hijo);
+                }
+            }
+        }
+        return true;
+    }
+
 
     // ===================== MAIN =====================
 
